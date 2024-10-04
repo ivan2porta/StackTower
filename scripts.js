@@ -48,6 +48,10 @@ function draw(){
     drawBackground();
     drawBoxes();
 
+    if(mode == MODES.BOUNCE) {
+        moveAndDetectCollision();
+    }
+
     window.requestAnimationFrame(draw);
 }
 
@@ -72,6 +76,22 @@ function drawBoxes() {
         y: 500,
         width: boxes[current -1].width,
         color: 'white'
+    }
+  }
+
+  function moveAndDetectCollision(){
+    const currentBox = boxes[current];
+    currentBox.x += xSpeed;
+
+    const isMovingRight = xSpeed > 0;
+    const isMovingLeft = xSpeed < 0;
+
+    const hasHitRightSide = currentBox.x + currentBox.width > canvas.width;
+
+    const hasHitLeftSide = currentBox.x < 0;
+
+    if((isMovingRight && hasHitRightSide) || (isMovingLeft && hasHitLeftSide)) {
+        xSpeed *= -1;
     }
   }
 
