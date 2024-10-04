@@ -33,6 +33,8 @@ function initializeGameState(){
     ySpeed = INITIAL_Y_SPEED;
     scrollCounter = 0;
     cameraY = 0;
+
+    createNewBox();
 }
 
 function restart(){
@@ -62,6 +64,15 @@ function drawBoxes() {
       context.fillStyle = color
       context.fillRect(x, newY, width, BOX_HEIGHT)
     })
+  }
+
+  function createNewBox(){
+    boxes[current] = {
+        x: 0,
+        y: 500,
+        width: boxes[current -1].width,
+        color: 'white'
+    }
   }
 
   restart();
