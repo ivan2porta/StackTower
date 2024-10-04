@@ -95,6 +95,13 @@ function drawBoxes() {
     }
   }
 
+  document.addEventListener('keydown', (event) => {
+    if(event.keyCode == 'Space' && mode == MODES.BOUNCE){
+        mode = MODES.FALL;
+        
+    }
+  })
+
   restart();
 
 }
