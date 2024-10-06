@@ -19,6 +19,16 @@ const INITIAL_X_SPEED = 2;
 let boxes = [];
 let scrollCounter, cameraY, current, mode, xSpeed, ySpeed;
 
+function createStepColor (step){
+    if (step == 0) return 'white'
+
+    const red = Math.floor(Math.random() * 255);
+    const green = Math.floor(Math.random() * 255);
+    const blue = Math.floor(Math.random() * 255);
+
+    return `rgb(${red}, ${green}, ${blue})`;
+}
+
 function initializeGameState(){
     boxes = [{
         x: canvas.width / 2 - INITIAL_BOX_WIDTH / 2,
@@ -50,6 +60,8 @@ function draw(){
 
     if(mode == MODES.BOUNCE) {
         moveAndDetectCollision();
+    } else if (mode == MODES.FALL){
+        updateFallMode();
     }
 
     window.requestAnimationFrame(draw);
@@ -75,8 +87,38 @@ function drawBoxes() {
         x: 0,
         y: 500,
         width: boxes[current -1].width,
-        color: 'white'
+        color: createStepColor()
     }
+  }
+
+  function updateFallMode(){
+    const currentBox = boxes[current];
+    currentBox.y -= ySpeed;
+
+    const positionPreviousBox = boxes[current - 1].y + BOX_HEIGHT;
+
+    if(currentBox.y == positionPreviousBox){
+        handleBoxLanding();
+    }
+  }
+
+  function handleBoxLanding(){
+    const currentBox = boxes[current];
+    const previousBox = boxes[current - 1];
+
+    const difference = currentBox.x - previousBox.x;
+
+    if (Math.abs(difference) >= currentBox.width){
+        mode = MODES.GAMEOVER;
+        return;
+    }
+
+    xSpeed = xSpeed + 0.2;
+    current++;
+    scrollCounter = BOX_HEIGHT;
+    mode = MODES.BOUNCE;
+
+    createNewBox();
   }
 
   function moveAndDetectCollision(){
@@ -96,9 +138,9 @@ function drawBoxes() {
   }
 
   document.addEventListener('keydown', (event) => {
-    if(event.keyCode == 'Space' && mode == MODES.BOUNCE){
+    if(event.key == ' ' && mode == MODES.BOUNCE){
         mode = MODES.FALL;
-        
+
     }
   })
 
