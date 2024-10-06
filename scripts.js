@@ -18,6 +18,7 @@ const INITIAL_X_SPEED = 1;
 
 //STATE
 let boxes = [];
+let debris = {x:0, y:0, width:0};
 let scrollCounter, cameraY, current, mode, xSpeed, ySpeed;
 
 function createStepColor (step){
@@ -37,6 +38,22 @@ function updateCamera(){
     }
 }
 
+function gameOver(){
+    mode = MODES.GAMEOVER;
+
+    context.fillStyle = 'rgba(255, 0, 0, 0.5)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.font = 'bold 20px Arial';
+    context.fillStyle = "white";
+    context.textAlign = 'center';
+    context.fillText(
+        'Game Over',
+        canvas.width / 2,
+        canvas.height / 2
+    )
+}
+
 function initializeGameState(){
     boxes = [{
         x: canvas.width / 2 - INITIAL_BOX_WIDTH / 2,
@@ -45,6 +62,7 @@ function initializeGameState(){
         color: "white"
     }]
 
+    let debris = {x:0, y:0, width:0};
     current = 1;
     mode = MODES.BOUNCE;
     xSpeed = INITIAL_X_SPEED;
@@ -65,12 +83,15 @@ function draw(){
 
     drawBackground();
     drawBoxes();
+    drawDebris();
 
     if(mode == MODES.BOUNCE) {
         moveAndDetectCollision();
     } else if (mode == MODES.FALL){
         updateFallMode();
     }
+
+    debris.y -= ySpeed;
 
     updateCamera();
 
@@ -93,6 +114,14 @@ function drawBoxes() {
     })
   }
 
+function drawDebris() {
+    const { x, y, width} = debris;
+    const newY = INITIAL_BOX_Y - y + cameraY;
+
+    context.fillStyle = boxes[current - 1].color;
+    context.fillRect(x, newY, width, BOX_HEIGHT);
+}
+
   function createNewBox(){
     boxes[current] = {
         x: 0,
@@ -100,6 +129,22 @@ function drawBoxes() {
         width: boxes[current -1].width,
         color: createStepColor()
     }
+  }
+
+  function createNewDebris(diference){
+    const currentBox = boxes[current];
+    const previousBox = boxes[current - 1];
+
+    const debrisX = currentBox.x > previousBox.x 
+    ? currentBox.x + currentBox.width
+    : currentBox.x 
+
+    debris = {
+        x: debrisX,
+        y: currentBox.y,
+        width: diference
+    }
+
   }
 
   function updateFallMode(){
@@ -132,11 +177,12 @@ function drawBoxes() {
     const difference = currentBox.x - previousBox.x;
 
     if (Math.abs(difference) >= currentBox.width){
-        mode = MODES.GAMEOVER;
+        gameOver();
         return;
     }
 
     adjustCurrentBox(difference);
+    createNewDebris(difference);
 
     xSpeed = xSpeed + 0.2;
     current++;
@@ -169,6 +215,13 @@ function drawBoxes() {
     }
   })
 
+  canvas.onpointerdown = () => {
+    if (mode == MODES.GAMEOVER){
+        restart();
+    } else if (mode == MODES.BOUNCE){
+        mode = MODES.FALL;
+    }
+  }
   
 
   restart();
