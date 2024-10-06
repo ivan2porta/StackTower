@@ -1,5 +1,6 @@
 window.onload = function(){
-    const canvas = document.querySelector("canvas");
+
+const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 
 const MODES = {
@@ -8,12 +9,12 @@ const MODES = {
     GAMEOVER: 'gameover'
 }
 
-const INITIAL_BOX_WIDTH = 150;
+const INITIAL_BOX_WIDTH = 300;
 const INITIAL_BOX_Y = 500;
 
-const BOX_HEIGHT = 150;
+const BOX_HEIGHT = 40;
 const INITIAL_Y_SPEED = 5;
-const INITIAL_X_SPEED = 2;
+const INITIAL_X_SPEED = 1;
 
 //STATE
 let boxes = [];
@@ -27,6 +28,13 @@ function createStepColor (step){
     const blue = Math.floor(Math.random() * 255);
 
     return `rgb(${red}, ${green}, ${blue})`;
+}
+
+function updateCamera(){
+    if(scrollCounter > 0){
+        cameraY++;
+        scrollCounter--;
+    }
 }
 
 function initializeGameState(){
@@ -64,6 +72,8 @@ function draw(){
         updateFallMode();
     }
 
+    updateCamera();
+
     window.requestAnimationFrame(draw);
 }
 
@@ -74,8 +84,9 @@ function drawBackground(){
 
 function drawBoxes() {
     boxes.forEach((box) => {
-      const { x, y, width, color } = box
-      const newY = INITIAL_BOX_Y - y + cameraY
+        
+      const { x, y, width, color } = box;
+      const newY = INITIAL_BOX_Y - y + cameraY;
 
       context.fillStyle = color
       context.fillRect(x, newY, width, BOX_HEIGHT)
@@ -85,7 +96,7 @@ function drawBoxes() {
   function createNewBox(){
     boxes[current] = {
         x: 0,
-        y: 500,
+        y: (current + 10) * BOX_HEIGHT,
         width: boxes[current -1].width,
         color: createStepColor()
     }
@@ -102,6 +113,18 @@ function drawBoxes() {
     }
   }
 
+  function adjustCurrentBox(difference) {
+    const currentBox = boxes[current]
+    const previousBox = boxes[current - 1]
+
+    if (currentBox.x > previousBox.x) {
+      currentBox.width -= difference
+    } else {
+      currentBox.width += difference
+      currentBox.x = previousBox.x
+    }
+  }
+
   function handleBoxLanding(){
     const currentBox = boxes[current];
     const previousBox = boxes[current - 1];
@@ -112,6 +135,8 @@ function drawBoxes() {
         mode = MODES.GAMEOVER;
         return;
     }
+
+    adjustCurrentBox(difference);
 
     xSpeed = xSpeed + 0.2;
     current++;
@@ -143,6 +168,8 @@ function drawBoxes() {
 
     }
   })
+
+  
 
   restart();
 
