@@ -256,7 +256,16 @@ window.onload = function(){
 
         
         current++;
-        xSpeed += xSpeed > 0 ? 0.5 : -0.5;
+        if ((xSpeed < 0 && xSpeed > -2) || (xSpeed > 0 && xSpeed < 2)){
+            xSpeed += xSpeed > 0 ? 0.5 : -0.5;
+        }
+        if ((xSpeed < 0 && xSpeed > -4) || (xSpeed > 0 && xSpeed < 4)){
+            xSpeed += xSpeed > 0 ? 0.2 : -0.2;
+        }
+        if ((xSpeed < 0 && xSpeed > -6) || (xSpeed > 0 && xSpeed < 6)){
+            xSpeed += xSpeed > 0 ? 0.1 : -0.1;
+        }
+        console.log (xSpeed);
         scrollCounter = BOX_HEIGHT;
         mode = MODES.BOUNCE;
 
