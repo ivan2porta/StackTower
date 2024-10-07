@@ -51,3 +51,29 @@ span {
 .invisible{
     display: none;
 }
+
+.mobileSound{
+    display: none;
+}
+@media screen and (max-width: 600px) {
+    #sound {
+        display: none; 
+    }
+
+    #scoreDiv{
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem;
+    }
+
+    .mobileSound{
+        display: block;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+   
+}
