@@ -2,6 +2,9 @@
 
 **Stack Tower** es un sencillo y divertido juego de navegador que consiste en apilar bloques lo más alto posible. El jugador debe hacer coincidir los bloques en movimiento para formar una torre. Si el jugador no coloca el bloque correctamente, el exceso se eliminará, y el bloque restante se hará más pequeño. El objetivo es lograr la torre más alta posible.
 
+Puedes jugar a **Stack Tower** directamente desde este enlace: [Jugar Stack Tower](https://ivan2porta.github.io/StackTower/)
+
+
 ## ✨ Características
 
 - **Animaciones suaves**: los bloques se mueven de un lado a otro, y cuando se colocan correctamente, la torre crece.
@@ -43,7 +46,6 @@ El juego tiene efectos de sonido para acompañar cada acción (como soltar bloqu
 - **Silenciar**: Al hacer click en el botón de silencio, el sonido se desactiva y el botón cambia a la opción de activar sonido.
 - **Activar Sonido**: Puedes volver a activar el sonido haciendo click en el botón correspondiente.
 
-## 🎮 Juega Ahora
 
-Puedes jugar a **Stack Tower** directamente desde este enlace: [Jugar Stack Tower](https://ivan2porta.github.io/StackTower/)
+
 
