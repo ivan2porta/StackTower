@@ -21,13 +21,54 @@ window.onload = function(){
     const pop2 = new Audio ('./audio/pop(2).mp3');
     const pop3 = new Audio ('./audio/pop(3).mp3');
     const pops = [pop1, pop2, pop3];
+    let hasPlayedSound = false;
+    let enableSound = true;
 
     let boxes = [];
     let debris = {x:0, y:0, width:0};
     let scrollCounter, cameraY, current, mode, xSpeed, ySpeed;
-    
-    // Nueva variable para controlar el sonido
-    let hasPlayedSound = false;
+
+    const muteButton = document.getElementsByClassName("muteSound")[0];
+    const unmuteButton = document.getElementsByClassName("unmuteSound")[0];
+
+    const gameOverOverlay = document.getElementById("gameOverOverlay");
+
+    document.addEventListener('keydown', (event) => {
+        if(event.key == ' ' && mode == MODES.BOUNCE){
+            mode = MODES.FALL;
+            triggerFall();
+        }
+    });
+
+    gameOverOverlay.addEventListener('click', (event) =>{
+        restart();
+    });
+
+    muteButton.addEventListener('click', (event) =>{
+        muteButton.classList.remove('visible');
+        muteButton.classList.add('invisible');
+        unmuteButton.classList.remove('invisible');
+        unmuteButton.classList.add('visible');
+        enableSound = false;
+        hasPlayedSound = false;
+    });
+
+    unmuteButton.addEventListener('click', (event) =>{
+        unmuteButton.classList.remove('visible');
+        unmuteButton.classList.add('invisible');
+        muteButton.classList.remove('invisible');
+        muteButton.classList.add('visible');
+        enableSound = true;
+    });
+
+    canvas.addEventListener('click', (event) => {
+        if (mode == MODES.GAMEOVER){
+            restart(); 
+        } else if (mode == MODES.BOUNCE){
+            mode = MODES.FALL;
+            triggerFall();
+        }
+    });
 
     function createStepColor(step) {
         const pastelColors = [
@@ -84,6 +125,7 @@ window.onload = function(){
         initializeGameState();
         draw();
         document.getElementById("gameOverOverlay").style.display = "none"; 
+        document.getElementById("score").textContent = "0";
     }
 
     function draw(){
@@ -136,7 +178,6 @@ window.onload = function(){
             color: createStepColor()
         };
 
-        // Cuando se crea una nueva caja, permitimos reproducir el sonido de nuevo
         hasPlayedSound = false;
     }
 
@@ -218,53 +259,10 @@ window.onload = function(){
     }
 
     function triggerFall() {
-        mode = MODES.FALL;
-    
-        // Reproduce el sonido solo si no se ha reproducido ya
-        if (!hasPlayedSound) {
-            const randomIndex = Math.floor(Math.random() * pops.length);
-            pops[randomIndex].currentTime = 0; // Reinicia el audio
-            pops[randomIndex].play(); // Reproduce el sonido
-            hasPlayedSound = true; // Evita que se reproduzca más de una vez
-        }
-    }
-
-    document.addEventListener('keydown', (event) => {
-        if(event.key == ' ' && mode == MODES.BOUNCE){
-            mode = MODES.FALL;
-
-            // Reproduce el sonido solo si no se ha reproducido ya
-            if (!hasPlayedSound) {
-                const randomIndex = Math.floor(Math.random() * pops.length);
-                pops[randomIndex].currentTime = 0;
-                pops[randomIndex].play();
-                hasPlayedSound = true;  // Evita que se reproduzca más de una vez
-            }
-        }
-    });
-
-    function triggerFall() {
-        if (!hasPlayedSound) {
+        if (enableSound && !hasPlayedSound) {
             const randomIndex = Math.floor(Math.random() * pops.length);
             pops[randomIndex].currentTime = 0;
             pops[randomIndex].play();
-            hasPlayedSound = true;  
-        }
-    }
-
-    document.addEventListener('mousedown', (event) => {
-        if(event.button == 0 && mode == MODES.BOUNCE){
-            mode = MODES.FALL;
-            triggerFall()
-        }
-    });
-
-    canvas.onpointerdown = () => {
-        if (mode == MODES.GAMEOVER){
-            restart(); 
-        } else if (mode == MODES.BOUNCE){
-            mode = MODES.FALL;
-            triggerFall()
         }
     }
 
