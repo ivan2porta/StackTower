@@ -25,6 +25,12 @@ span {
     justify-content: center;
 }
 
+#sound{
+    display: flex;
+    margin: 2rem;
+    justify-content: flex-end;
+}
+
 .overlay {
     position: fixed; 
     top: 50%;
