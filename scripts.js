@@ -90,7 +90,9 @@ window.onload = function(){
     }
 
     function gameOver(){
-        gameOverSound.play(); 
+        if(enableSound == true){
+            gameOverSound.play(); 
+        }
         mode = MODES.GAMEOVER;
 
         context.filter = 'blur(3px)'; 
