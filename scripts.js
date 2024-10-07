@@ -254,8 +254,9 @@ window.onload = function(){
         adjustCurrentBox(difference);
         createNewDebris(difference);
 
-        xSpeed = xSpeed + 0.5;
+        
         current++;
+        xSpeed += xSpeed > 0 ? 0.5 : -0.5;
         scrollCounter = BOX_HEIGHT;
         mode = MODES.BOUNCE;
 
@@ -275,7 +276,7 @@ window.onload = function(){
         const hasHitLeftSide = currentBox.x < 0;
 
         if((isMovingRight && hasHitRightSide) || (isMovingLeft && hasHitLeftSide)) {
-            xSpeed *= -1;
+            xSpeed = -xSpeed;
         }
     }
 
