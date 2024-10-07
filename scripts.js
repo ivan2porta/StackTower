@@ -64,19 +64,19 @@ window.onload = function(){
     });
 
     muteButtonMobile.addEventListener('click', (event) =>{
-        muteButton.classList.remove('visible');
-        muteButton.classList.add('invisible');
-        unmuteButton.classList.remove('invisible');
-        unmuteButton.classList.add('visible');
+        muteButtonMobile.classList.remove('visible');
+        muteButtonMobile.classList.add('invisible');
+        unmuteButtonMobile.classList.remove('invisible');
+        unmuteButtonMobile.classList.add('visible');
         enableSound = false;
         hasPlayedSound = false;
     });
 
     unmuteButtonMobile.addEventListener('click', (event) =>{
-        unmuteButton.classList.remove('visible');
-        unmuteButton.classList.add('invisible');
-        muteButton.classList.remove('invisible');
-        muteButton.classList.add('visible');
+        unmuteButtonMobile.classList.remove('visible');
+        unmuteButtonMobile.classList.add('invisible');
+        muteButtonMobile.classList.remove('invisible');
+        muteButtonMobile.classList.add('visible');
         enableSound = true;
     });
 
