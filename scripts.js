@@ -28,8 +28,10 @@ window.onload = function(){
     let debris = {x:0, y:0, width:0};
     let scrollCounter, cameraY, current, mode, xSpeed, ySpeed;
 
-    const muteButton = document.getElementsByClassName("muteSound")[0];
-    const unmuteButton = document.getElementsByClassName("unmuteSound")[0];
+    const muteButtonMobile = document.getElementsByClassName("muteSound")[0];
+    const unmuteButtonMobile = document.getElementsByClassName("unmuteSound")[0];
+    const muteButton = document.getElementsByClassName("muteSound")[1];
+    const unmuteButton = document.getElementsByClassName("unmuteSound")[1];
 
     const gameOverOverlay = document.getElementById("gameOverOverlay");
 
@@ -54,6 +56,23 @@ window.onload = function(){
     });
 
     unmuteButton.addEventListener('click', (event) =>{
+        unmuteButton.classList.remove('visible');
+        unmuteButton.classList.add('invisible');
+        muteButton.classList.remove('invisible');
+        muteButton.classList.add('visible');
+        enableSound = true;
+    });
+
+    muteButtonMobile.addEventListener('click', (event) =>{
+        muteButton.classList.remove('visible');
+        muteButton.classList.add('invisible');
+        unmuteButton.classList.remove('invisible');
+        unmuteButton.classList.add('visible');
+        enableSound = false;
+        hasPlayedSound = false;
+    });
+
+    unmuteButtonMobile.addEventListener('click', (event) =>{
         unmuteButton.classList.remove('visible');
         unmuteButton.classList.add('invisible');
         muteButton.classList.remove('invisible');
