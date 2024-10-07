@@ -13,8 +13,8 @@ window.onload = function(){
     const INITIAL_BOX_Y = 500;
 
     const BOX_HEIGHT = 45;
-    const INITIAL_Y_SPEED = 5;
-    const INITIAL_X_SPEED = 1;
+    const INITIAL_Y_SPEED = 8;
+    const INITIAL_X_SPEED = 2;
 
     const gameOverSound = new Audio ('./audio/gameover.mp3');
     const pop1 = new Audio ('./audio/pop(1).mp3');
@@ -254,7 +254,7 @@ window.onload = function(){
         adjustCurrentBox(difference);
         createNewDebris(difference);
 
-        xSpeed = xSpeed + 0.2;
+        xSpeed = xSpeed + 0.5;
         current++;
         scrollCounter = BOX_HEIGHT;
         mode = MODES.BOUNCE;
